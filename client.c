@@ -6,13 +6,11 @@
 /*   By: bsalim <bsalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:58:01 by bsalim            #+#    #+#             */
-/*   Updated: 2025/02/01 20:36:43 by bsalim           ###   ########.fr       */
+/*   Updated: 2025/02/06 20:33:26 by bsalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-#include <signal.h>
-#include <unistd.h>
 
 void send_bit(int pid, char bit)
 {
@@ -20,9 +18,9 @@ void send_bit(int pid, char bit)
         kill(pid, SIGUSR1);
     else
         kill(pid, SIGUSR2);
-    usleep(100); // Delay to ensure server processes the signal
+    
+    usleep(100);
 }
-
 void send_message(int pid, char *message)
 {
     while (*message)
@@ -35,32 +33,29 @@ void send_message(int pid, char *message)
         }
         message++;
     }
-
-    // Send null character '\0' to indicate end of message
-    int i = 7;
-    while (i >= 0)
-    {
-        send_bit(pid, ('\0' >> i) & 1);
-        i--;
-    }
 }
+
 
 int main(int ac, char **av)
 {
-    if (ac != 3)
+    if(ac == 3)
     {
-        ft_printf("Usage: %s <PID> <Message>\n", av[0]);
-        return 1;
+        int pid = ft_atoi(av[1]);
+        int i =0;
+        while(av[1][i])
+        {
+            if(!ft_isdigit(av[1][i]) || pid <= 0)
+            {
+                write(1,"eywwwa: PID Machy hwa hadak \n", 30);
+                return 1;
+            }
+            i++;
+        }
+        send_message(pid, av[2]);    
     }
-
-    int pid = ft_atoi(av[1]);
-    if (pid <= 0)
+    else 
     {
-        ft_printf("Error: Invalid PID\n");
-        return 1;
+            write(1,"eywwwa: nsiti chi arg \n", 24);
     }
-
-    send_message(pid, av[2]);
-
     return 0;
 }
