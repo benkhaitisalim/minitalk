@@ -6,7 +6,7 @@
 /*   By: bsalim <bsalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 16:11:22 by bsalim            #+#    #+#             */
-/*   Updated: 2025/02/06 22:32:09 by bsalim           ###   ########.fr       */
+/*   Updated: 2025/02/07 13:18:56 by bsalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ void	handle_signals(int signal, siginfo_t *info, void *ptr)
 	static int				bit_pos;
 	static int				valid_pid;
 
-	valid_pid = 0;
-	bit_pos = 0;
-	character = 0;
 	(void)ptr;
 	if (!valid_pid)
 		valid_pid = info->si_pid;
@@ -30,12 +27,16 @@ void	handle_signals(int signal, siginfo_t *info, void *ptr)
 		bit_pos = 0;
 	}
 	if (signal == SIGUSR1)
-		character &= ~(1 << (7 - bit_pos));
+		character &= ~(1 << (7 - bit_pos)); 
 	else if (signal == SIGUSR2)
 		character |= (1 << (7 - bit_pos));
 	bit_pos++;
 	if (bit_pos == 8) 
+	{
 		write(1, &character, 1);
+		character = 0;
+		bit_pos = 0;
+	}
 }
 
 int	main(void)
@@ -47,7 +48,7 @@ int	main(void)
 	sa.sa_sigaction = &handle_signals;
 	pid = getpid();
 	ft_punbr (pid);
-	write (1, "\n", 1);
+	write(1, "\n", 1);
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	while (1)

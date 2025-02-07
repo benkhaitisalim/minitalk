@@ -6,7 +6,7 @@
 /*   By: bsalim <bsalim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:58:01 by bsalim            #+#    #+#             */
-/*   Updated: 2025/02/06 22:26:14 by bsalim           ###   ########.fr       */
+/*   Updated: 2025/02/07 13:18:29 by bsalim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,4 @@ int	main(int ac, char **av)
 	{
 		write (1, "eywwwa: nsiti chi arg \n", 24);
 	}
-	return (0);
 }
